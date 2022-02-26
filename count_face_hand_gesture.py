@@ -91,10 +91,13 @@ class HandGestureDetector:
     Args:
         img_frame (np.ndarray): Input image/video frame
     """
+    
     self.IMG_HT,self.IMG_WT = img_frame.shape[:2]
     img_frame = cv2.flip(img_frame, 1)
     img_frame = cv2.cvtColor(img_frame, cv2.COLOR_BGR2RGB)
+
     self.results = self.HandDets.process(img_frame)
+
     if self.results.multi_hand_landmarks:
       for h_lmarks in self.results.multi_hand_landmarks:
         thumb_tip_val = h_lmarks.landmark[4]
@@ -102,20 +105,34 @@ class HandGestureDetector:
         middle_tip_val = h_lmarks.landmark[12]
         ring_tip_val = h_lmarks.landmark[16]
         pinky_tip_val = h_lmarks.landmark[20]
+
         if thumb_tip_val.y < index_tip_val.y < middle_tip_val.y < ring_tip_val.y < pinky_tip_val.y:
-          if not self.up_count_done_flag:
-            self.thumbs_up_count += 1
+          self.gesture_assert_counter += 1
+          if self.gesture_assert_counter >= self.ASSERT_THRESH and (self.up_count_done_flag == False):                              
             self.up_count_done_flag = True
-        elif thumb_tip_val.y > index_tip_val.y > middle_tip_val.y > ring_tip_val.y > pinky_tip_val.y:
-          if not self.down_count_done_flag:
-            self.thumbs_down_count += 1 
+
+        if thumb_tip_val.y > index_tip_val.y > middle_tip_val.y > ring_tip_val.y > pinky_tip_val.y:
+          self.gesture_assert_counter += 1
+          if self.gesture_assert_counter >= self.ASSERT_THRESH and (self.down_count_done_flag == False):
             self.down_count_done_flag = True
     else:
       self.thumbs_up_count = 0
       self.thumbs_down_count = 0
       self.up_count_done_flag = False
       self.down_count_done_flag = False
+      self.gesture_assert_counter = 0
+      self.fin_flag = False
 
+  def getThumbCount(self, img):
+    self.checkThumbsUpDown(img)
+    if self.up_count_done_flag and (self.fin_flag == False):
+      self.CountMaintainer['THUMB_UP'] =  self.CountMaintainer['THUMB_UP'] + 1
+      self.fin_flag = True
+    if self.down_count_done_flag and (self.fin_flag == False):
+      self.CountMaintainer['THUMB_DOWN'] = self.CountMaintainer['THUMB_DOWN'] + 1
+      self.fin_flag = True
+
+    return self.CountMaintainer
 
 if __name__ == "__main__":
     import argparse
