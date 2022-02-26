@@ -76,6 +76,7 @@ class HandGestureDetector:
     self.down_count_done_flag = False
     self.fin_flag = False
 
+    self.CountMaintainer = {'THUMB_UP': 0, 'THUMB_DOWN':0}
 
     mpHands = mp.solutions.hands
     self.HandDets = mpHands.Hands(static_image_mode=True,
