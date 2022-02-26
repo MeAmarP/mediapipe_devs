@@ -71,8 +71,6 @@ class HandGestureDetector:
     self.ASSERT_THRESH = 5
     self.gesture_assert_counter = 0
     self.up_count_done_flag = False
-
-    self.thumbs_down_count = 0
     self.down_count_done_flag = False
     self.fin_flag = False
 
@@ -106,7 +104,7 @@ class HandGestureDetector:
         ring_tip_val = h_lmarks.landmark[16]
         pinky_tip_val = h_lmarks.landmark[20]
 
-        if thumb_tip_val.y < index_tip_val.y < middle_tip_val.y < ring_tip_val.y < pinky_tip_val.y:
+        if thumb_tip_val.y < index_tip_val.y < middle_tip_val.y < ring_tip_val.y < pinky_tip_val.y:          
           self.gesture_assert_counter += 1
           if self.gesture_assert_counter >= self.ASSERT_THRESH and (self.up_count_done_flag == False):                              
             self.up_count_done_flag = True
@@ -116,8 +114,6 @@ class HandGestureDetector:
           if self.gesture_assert_counter >= self.ASSERT_THRESH and (self.down_count_done_flag == False):
             self.down_count_done_flag = True
     else:
-      self.thumbs_up_count = 0
-      self.thumbs_down_count = 0
       self.up_count_done_flag = False
       self.down_count_done_flag = False
       self.gesture_assert_counter = 0
@@ -162,14 +158,14 @@ if __name__ == "__main__":
         break    
 #      frame = cv2.resize(frame,(416,416))
       f_bbox = facedetvid.getDetectedFaces(frame)
-      handgestvid.checkThumbsUpDown(frame)
+      thumb_count = handgestvid.getThumbCount(frame)
 
 
       for ele in f_bbox:
         cv2.rectangle(frame,(ele[0],ele[1]),(ele[2],ele[3]),(128,255,0),2)
       cv2.putText(frame, "FaceCount = " +str(facedetvid.face_count), (10,20),cv2.FONT_HERSHEY_SIMPLEX, 0.6,(0,0,255), 2)
-      cv2.putText(frame, "ThumbsUpCount = " +str(handgestvid.thumbs_up_count), (10,40),cv2.FONT_HERSHEY_SIMPLEX, 0.6,(0,0,255), 2)
-      cv2.putText(frame, "ThumbsDownCount = " +str(handgestvid.thumbs_down_count), (10,60),cv2.FONT_HERSHEY_SIMPLEX, 0.6,(0,0,255), 2)
+      cv2.putText(frame, "ThumbsUpCount = " +str(thumb_count['THUMB_UP']), (10,40),cv2.FONT_HERSHEY_SIMPLEX, 0.6,(0,0,255), 2)
+      cv2.putText(frame, "ThumbsDownCount = " +str(thumb_count['THUMB_DOWN']), (10,60),cv2.FONT_HERSHEY_SIMPLEX, 0.6,(0,0,255), 2)
       cv2.imshow('Output', frame)
       
       if cv2.waitKey(1) == ord('q'):
@@ -177,5 +173,5 @@ if __name__ == "__main__":
 
     vidcap.release()
     cv2.destroyAllWindows()
-    print("Total Up = ", total_count_up)
-    print("Total Down = ", total_count_down)
+    # print("Total Up = ", total_count_up)
+    # print("Total Down = ", total_count_down)
