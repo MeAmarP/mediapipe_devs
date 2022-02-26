@@ -60,13 +60,13 @@ class HandGestureDetector:
   Detect faces in the given image/video frame and extract bonding box information.
   """
 
-  def __init__(self, maxHands=1, minConfScore=0.45) -> None:
+  def __init__(self,maxHands=1, minConfScore=0.5) -> None:
     """
     Initialize mediapipe hands solution used to extract hand/fingers keypoints
 
     Args:
-        maxHands (int, optional): Max number of hands to detect in frame. Defaults to 2.
-        minConfScore (float, optional): Confidence value to assert hand detection as success. Defaults to 0.45.
+        maxHands (int, optional): Max number of hands to detect in frame. Defaults to 1.
+        minConfScore (float, optional): Confidence value to assert hand detection as success. Defaults to 0.5.
     """
     self.thumbs_up_count = 0
     self.up_count_done_flag = False
