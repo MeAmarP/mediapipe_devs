@@ -68,11 +68,13 @@ class HandGestureDetector:
         maxHands (int, optional): Max number of hands to detect in frame. Defaults to 1.
         minConfScore (float, optional): Confidence value to assert hand detection as success. Defaults to 0.5.
     """
-    self.thumbs_up_count = 0
+    self.ASSERT_THRESH = 5
+    self.gesture_assert_counter = 0
     self.up_count_done_flag = False
 
     self.thumbs_down_count = 0
     self.down_count_done_flag = False
+    self.fin_flag = False
 
 
     mpHands = mp.solutions.hands
