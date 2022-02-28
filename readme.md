@@ -1,8 +1,14 @@
 ### Dependencies
-- pip install mediapipe
+- Refer requirements.txt
+
+### Applications:
+1. Face Detector
+2. Hand Detector 
+   - With Up-vote and Down-vote counter.
 
 ### To run on webcam
-- `python count_face_like_dislike.py`
+- `python hand_detector.py`
 
 ### To run on Video File
-- `python count_face_like_dislike.py -v path-to-video-file`
+- `python  hand_detector.py -v path-to-video-file`
+ 
