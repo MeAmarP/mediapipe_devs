@@ -107,8 +107,8 @@ if __name__ == "__main__":
     #Test class on Video
     vidcap = cv2.VideoCapture(args.videosrc)
 
-    fourcc = cv2.VideoWriter_fourcc(*'MPEG')
-    v_write = cv2.VideoWriter('mediapipe_fun1.mp4', fourcc, 10.0,(1280,480))
+    # fourcc = cv2.VideoWriter_fourcc(*'MPEG')
+    # v_write = cv2.VideoWriter('mediapipe_fun1.mp4', fourcc, 10.0,(1280,480))
    
     handgestvid = HandGestureDetector(maxHands=1)
 
@@ -131,8 +131,7 @@ if __name__ == "__main__":
       cv2.putText(frame, "Dis-Likes  " +str(thumb_count['THUMB_DOWN']), (310,60),cv2.FONT_HERSHEY_SIMPLEX, 0.7,(255,0,0), 2)
 
       fin_frame = cv2.hconcat([frame, cv2.cvtColor(annon_img, cv2.COLOR_BGR2RGB)])
-      print(fin_frame.shape)
-      v_write.write(fin_frame)
+      # v_write.write(fin_frame)
       cv2.imshow('Output', fin_frame)
       # cv2.imshow('Output1',)
       
